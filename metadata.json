@@ -1,0 +1,6 @@
+{
+  "name": "A Magical Date Night Story",
+  "description": "An interactive, romantic surprise web application in Burmese with love letter, date planner, love story timeline, reasons I love you, and downloadable date ticket.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
