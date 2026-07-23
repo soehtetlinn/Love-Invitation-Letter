@@ -1,9 +1,15 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Volume2, VolumeX, Play, Pause, Music, Sparkles } from 'lucide-react';
+import { Volume2, VolumeX, Play, Pause, Sparkles } from 'lucide-react';
 
 interface AudioPlayerProps {
   autoPlayTriggered: boolean;
 }
+
+const DEFAULT_TRACK = {
+  title: 'စိန်ပန်းပြာ',
+  artist: 'အောင်မြင့်မြတ် & မေဆွိ',
+  url: '/sein-pan-pya.mp3',
+};
 
 export const AudioPlayerWidget: React.FC<AudioPlayerProps> = ({ autoPlayTriggered }) => {
   const [isPlaying, setIsPlaying] = useState(false);
@@ -11,94 +17,73 @@ export const AudioPlayerWidget: React.FC<AudioPlayerProps> = ({ autoPlayTriggere
   const [volume, setVolume] = useState(0.5);
   const [isExpanded, setIsExpanded] = useState(false);
 
-  const audioCtxRef = useRef<AudioContext | null>(null);
-  const isPlayingRef = useRef(false);
-  const timerRef = useRef<number | null>(null);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+  const hasAutoPlayedRef = useRef(false);
 
-  // Romantic arpeggio notes (F frequency in Hz)
-  const notes = [
-    349.23, // F4
-    440.00, // A4
-    523.25, // C5
-    659.25, // E5
-    698.46, // F5
-    523.25, // C5
-    440.00, // A4
-    392.00, // G4
-  ];
+  useEffect(() => {
+    const audio = new Audio(DEFAULT_TRACK.url);
+    audio.loop = true;
+    audio.volume = volume;
+    audio.preload = 'auto';
+    audioRef.current = audio;
 
-  const startPianoSynth = () => {
-    if (!audioCtxRef.current) {
-      const AudioCtx = window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
-      audioCtxRef.current = new AudioCtx();
-    }
+    const handlePlay = () => setIsPlaying(true);
+    const handlePause = () => setIsPlaying(false);
+    const handleEnded = () => setIsPlaying(false);
 
-    if (audioCtxRef.current.state === 'suspended') {
-      audioCtxRef.current.resume();
-    }
+    audio.addEventListener('play', handlePlay);
+    audio.addEventListener('pause', handlePause);
+    audio.addEventListener('ended', handleEnded);
 
-    isPlayingRef.current = true;
-    setIsPlaying(true);
-
-    let noteIdx = 0;
-
-    const playNextNote = () => {
-      if (!isPlayingRef.current || !audioCtxRef.current) return;
-
-      const ctx = audioCtxRef.current;
-      const osc = ctx.createOscillator();
-      const gain = ctx.createGain();
-
-      // Soft sine/triangle blend for piano tone
-      osc.type = 'sine';
-      const freq = notes[noteIdx % notes.length];
-      osc.frequency.setValueAtTime(freq, ctx.currentTime);
-
-      const currentVol = isMuted ? 0 : volume * 0.25;
-      gain.gain.setValueAtTime(0.001, ctx.currentTime);
-      gain.gain.exponentialRampToValueAtTime(Math.max(0.001, currentVol), ctx.currentTime + 0.1);
-      gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 1.8);
-
-      osc.connect(gain);
-      gain.connect(ctx.destination);
-
-      osc.start();
-      osc.stop(ctx.currentTime + 1.8);
-
-      noteIdx++;
-      timerRef.current = window.setTimeout(playNextNote, 600);
+    return () => {
+      audio.removeEventListener('play', handlePlay);
+      audio.removeEventListener('pause', handlePause);
+      audio.removeEventListener('ended', handleEnded);
+      audio.pause();
+      audio.src = '';
+      audioRef.current = null;
     };
+  }, []);
 
-    playNextNote();
+  useEffect(() => {
+    if (audioRef.current) {
+      audioRef.current.volume = isMuted ? 0 : volume;
+    }
+  }, [volume, isMuted]);
+
+  const startPlayback = async () => {
+    const audio = audioRef.current;
+    if (!audio) return;
+    try {
+      await audio.play();
+      setIsPlaying(true);
+    } catch {
+      // Autoplay may be blocked until a user gesture
+      setIsPlaying(false);
+    }
   };
 
-  const stopPianoSynth = () => {
-    isPlayingRef.current = false;
+  const stopPlayback = () => {
+    const audio = audioRef.current;
+    if (!audio) return;
+    audio.pause();
     setIsPlaying(false);
-    if (timerRef.current) {
-      clearTimeout(timerRef.current);
-    }
   };
 
   const togglePlay = () => {
     if (isPlaying) {
-      stopPianoSynth();
+      stopPlayback();
     } else {
-      startPianoSynth();
+      void startPlayback();
     }
   };
 
   useEffect(() => {
-    if (autoPlayTriggered && !isPlaying) {
-      startPianoSynth();
+    if (autoPlayTriggered && !hasAutoPlayedRef.current) {
+      hasAutoPlayedRef.current = true;
+      void startPlayback();
     }
   }, [autoPlayTriggered]);
-
-  useEffect(() => {
-    return () => {
-      stopPianoSynth();
-    };
-  }, []);
 
   return (
     <div className="fixed bottom-4 left-4 sm:left-8 z-40 transition-all duration-300">
@@ -110,13 +95,13 @@ export const AudioPlayerWidget: React.FC<AudioPlayerProps> = ({ autoPlayTriggere
         <button
           onClick={() => setIsExpanded(!isExpanded)}
           className="p-1 rounded-full hover:bg-white/10 transition-colors flex flex-col text-left"
-          title="Romantic Music Player"
+          title={`${DEFAULT_TRACK.title} — ${DEFAULT_TRACK.artist}`}
         >
           <div className="h-1 w-20 bg-white/20 rounded-full mb-1 overflow-hidden">
             <div className={`h-1 bg-white rounded-full ${isPlaying ? 'w-2/3 animate-pulse' : 'w-1/3'}`} />
           </div>
-          <p className="text-[10px] text-white/80 uppercase tracking-tight font-bold">
-            {isPlaying ? 'Romantic Piano Mix 🎶' : 'Click to Play 🎵'}
+          <p className="text-[10px] text-white/80 tracking-tight font-bold font-myanmar max-w-[9rem] truncate">
+            {isPlaying ? DEFAULT_TRACK.title : 'Click to Play 🎵'}
           </p>
         </button>
 
@@ -145,8 +130,8 @@ export const AudioPlayerWidget: React.FC<AudioPlayerProps> = ({ autoPlayTriggere
               onChange={(e) => setVolume(parseFloat(e.target.value))}
               className="w-16 h-1 bg-white/30 rounded-lg appearance-none cursor-pointer accent-white"
             />
-            <span className="text-[10px] text-white/90 font-semibold flex items-center">
-              <Sparkles className="w-3 h-3 mr-0.5 text-amber-200" /> Lullaby
+            <span className="text-[10px] text-white/90 font-semibold flex items-center font-myanmar whitespace-nowrap">
+              <Sparkles className="w-3 h-3 mr-0.5 text-amber-200" /> {DEFAULT_TRACK.artist}
             </span>
           </div>
         )}

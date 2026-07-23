@@ -58,7 +58,7 @@ export const Page1Intro: React.FC<Page1Props> = ({ onNext, onTriggerAudio }) => 
           transition={{ duration: 0.8, delay: 0.4 }}
           className="text-3xl sm:text-5xl font-extrabold text-white mb-4 tracking-wide leading-relaxed font-myanmar drop-shadow-sm"
         >
-          ဟယ်... တစ်ခွန်း ❤️
+          တစ်ခွန်းလေးရေ...
         </motion.h1>
 
         {/* Secondary Subtitle */}
