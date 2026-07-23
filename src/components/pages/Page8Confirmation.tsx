@@ -6,6 +6,7 @@ import QRCode from 'qrcode';
 import { DateSelection } from '../../types';
 import { ROMANTIC_LOCATIONS } from '../../data/locations';
 import { DEFAULT_PARTNER_NAME, PARTNER_NAME_HINT, her } from '../../data/partner';
+import { submitInquiry } from '../../lib/inquiriesApi';
 import { Heart, Sparkles, Calendar, Clock, MapPin, Download, CheckCircle2, Ticket, QrCode as QrIcon, User } from 'lucide-react';
 
 interface Page8Props {
@@ -30,8 +31,19 @@ export const Page8Confirmation: React.FC<Page8Props> = ({ selection, onChangeSel
       .catch((err) => console.error(err));
   }, []);
 
-  const handleConfirm = () => {
+  const handleConfirm = async () => {
     setIsConfirmed(true);
+
+    try {
+      await submitInquiry({
+        ...selection,
+        partnerName,
+        locationName: selectedLoc.nameMm || selectedLoc.nameEn,
+        locationAddress: selectedLoc.addressMm,
+      });
+    } catch (err) {
+      console.error('Failed to save inquiry:', err);
+    }
 
     // Huge Heart Rain & Fireworks Explosion
     const duration = 5 * 1000;
