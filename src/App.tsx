@@ -17,14 +17,14 @@ import { Page7LoveLetter } from './components/pages/Page7LoveLetter';
 import { Page8Confirmation } from './components/pages/Page8Confirmation';
 
 import { Moon, Sun, Heart, Sparkles } from 'lucide-react';
-import { DEFAULT_PARTNER_NAME, her } from './data/partner';
+import { DEFAULT_PARTNER_NAME } from './data/partner';
+import { randomRomanticQuote } from './data/quotes';
 
 export default function App() {
   const [currentStep, setCurrentStep] = useState(1);
   const [maxUnlockedStep, setMaxUnlockedStep] = useState(1);
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [easterEggToast, setEasterEggToast] = useState<string | null>(null);
-  const [heartTapCount, setHeartTapCount] = useState(0);
 
   const [dateSelection, setDateSelection] = useState<DateSelection>({
     date: new Date().toISOString().split('T')[0],
@@ -55,12 +55,7 @@ export default function App() {
   };
 
   const handleHeaderHeartClick = () => {
-    const newCount = heartTapCount + 1;
-    setHeartTapCount(newCount);
-    if (newCount >= 3) {
-      setEasterEggToast(`ကိုယ်လည်း ${her(1)} ကို အရမ်းချစ်တယ် 🥹❤️`);
-      setHeartTapCount(0);
-    }
+    setEasterEggToast((prev) => randomRomanticQuote(prev));
   };
 
   return (
@@ -94,7 +89,7 @@ export default function App() {
             title="အချစ်နှလုံးသားလေး"
           >
             <Heart className="w-4 h-4 text-white fill-white animate-pulse" />
-            <span>Forever Love</span>
+            <span>ဒါလေးကိုနှိပ်ကြည့်</span>
             <Sparkles className="w-3.5 h-3.5 text-amber-200" />
           </button>
 
