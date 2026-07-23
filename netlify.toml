@@ -1,0 +1,26 @@
+[build]
+  command = "npm run build"
+  publish = "dist"
+  functions = "netlify/functions"
+
+[functions]
+  node_bundler = "esbuild"
+
+# API → Netlify Functions
+[[redirects]]
+  from = "/api/inquiries"
+  to = "/.netlify/functions/inquiries"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/api/admin/login"
+  to = "/.netlify/functions/admin-login"
+  status = 200
+  force = true
+
+# SPA routes (fixes /admin 404)
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
