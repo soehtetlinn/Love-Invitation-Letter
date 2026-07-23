@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { motion } from 'motion/react';
 import { REASONS_WHY_I_LOVE_YOU } from '../../data/reasons';
+import { her } from '../../data/partner';
 import { Sparkles, Heart, Smile, HeartHandshake, Music, Gem, ArrowRight, RotateCw } from 'lucide-react';
 
 interface Page6Props {
@@ -40,7 +41,7 @@ export const Page6Reasons: React.FC<Page6Props> = ({ onNext }) => {
           ရင်ထဲက စကားများ 💌
         </span>
         <h2 className="text-2xl sm:text-4xl font-extrabold text-white font-myanmar leading-tight drop-shadow-sm">
-          ကိုယ် တစ်ခွန်း ကို ချစ်ရတဲ့ အကြောင်းအရင်းများ 💌
+          ကိုယ် {her(0)} ကို ချစ်ရတဲ့ အကြောင်းအရင်းများ 💌
         </h2>
         <p className="text-xs sm:text-sm text-white/80 mt-2 font-myanmar">
           ကတ်ကလေးများကို လှန်ကြည့်ပြီး ကိုယ့်ရဲ့ ရင်ခုန်သံတွေကို ဖတ်ကြည့်ပါ... ({flippedCount}/{REASONS_WHY_I_LOVE_YOU.length})

@@ -1,18 +1,17 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Mail, Sparkles, Heart, HeartHandshake } from 'lucide-react';
+import { her } from '../../data/partner';
 
 interface Page2Props {
   onNext: () => void;
-  onTriggerAudio: () => void;
 }
 
-export const Page2Envelope: React.FC<Page2Props> = ({ onNext, onTriggerAudio }) => {
+export const Page2Envelope: React.FC<Page2Props> = ({ onNext }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [cardSlidOut, setCardSlidOut] = useState(false);
 
   const handleOpenEnvelope = () => {
-    onTriggerAudio();
     setIsOpen(true);
 
     setTimeout(() => {
@@ -44,7 +43,7 @@ export const Page2Envelope: React.FC<Page2Props> = ({ onNext, onTriggerAudio }) 
         </div>
 
         <h2 className="text-2xl sm:text-3xl font-extrabold text-white mb-6 font-myanmar leading-snug drop-shadow-sm">
-          တစ်ခွန်း အတွက် စာတစ်စောင် ရောက်လာတယ် 💌
+          {her(1)} အတွက် စာတစ်စောင် ရောက်လာတယ် 💌
         </h2>
 
         {/* Envelope Container */}
@@ -63,7 +62,7 @@ export const Page2Envelope: React.FC<Page2Props> = ({ onNext, onTriggerAudio }) 
                   အထူး ဖိတ်ခေါ်လွှာ 💌
                 </h3>
                 <p className="text-xs text-[#5c3821] dark:text-amber-100/90 mt-1 font-myanmar">
-                  တစ်ခွန်း တစ်ယောက်တည်းအတွက်သာ သီးသန့် ရည်ရွယ်သည်...
+                  {her(0)} တစ်ယောက်တည်းအတွက်သာ သီးသန့် ရည်ရွယ်သည်...
                 </p>
                 <div className="mt-3 pt-2 border-t border-amber-300/40">
                   <span className="text-[11px] text-[#8c5638] dark:text-amber-300 font-bold uppercase tracking-wider">

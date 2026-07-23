@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { LOVE_TIMELINE_MEMORIES } from '../../data/timeline';
 import { MemoryItem } from '../../types';
+import { her } from '../../data/partner';
 import { Sparkles, Heart, MapPin, Calendar, X, ArrowRight } from 'lucide-react';
 
 interface Page5Props {
@@ -20,7 +21,7 @@ export const Page5LoveStory: React.FC<Page5Props> = ({ onNext }) => {
           တို့နှစ်ယောက်ရဲ့ ချစ်ခြင်းကမ္ဘာ 💖
         </span>
         <h2 className="text-2xl sm:text-4xl font-extrabold text-white font-myanmar leading-tight drop-shadow-sm">
-          တစ်ခွန်း နဲ့ ကိုယ် ရဲ့ အမှတ်တရ လမ်းကလေး 💖
+          {her(1)} နဲ့ ကိုယ် ရဲ့ အမှတ်တရ လမ်းကလေး 💖
         </h2>
         <p className="text-xs sm:text-sm text-white/80 mt-2 font-myanmar">
           ဆုံတွေ့ခဲ့တဲ့ စက္ကန့်လေးကနေ ဒီနေ့အထိ အဖိုးတန်ခဲ့သော အချိန်များ...

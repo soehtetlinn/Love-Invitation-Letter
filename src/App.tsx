@@ -17,11 +17,11 @@ import { Page7LoveLetter } from './components/pages/Page7LoveLetter';
 import { Page8Confirmation } from './components/pages/Page8Confirmation';
 
 import { Moon, Sun, Heart, Sparkles } from 'lucide-react';
+import { DEFAULT_PARTNER_NAME, her } from './data/partner';
 
 export default function App() {
   const [currentStep, setCurrentStep] = useState(1);
   const [maxUnlockedStep, setMaxUnlockedStep] = useState(1);
-  const [autoPlayMusic, setAutoPlayMusic] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [easterEggToast, setEasterEggToast] = useState<string | null>(null);
   const [heartTapCount, setHeartTapCount] = useState(0);
@@ -31,7 +31,7 @@ export default function App() {
     time: '18:30',
     timeCategory: 'sunset',
     locationId: 'vertigo-rooftop',
-    partnerName: 'တစ်ခွန်း ❤️',
+    partnerName: DEFAULT_PARTNER_NAME,
   });
 
   const handleNextStep = () => {
@@ -58,7 +58,7 @@ export default function App() {
     const newCount = heartTapCount + 1;
     setHeartTapCount(newCount);
     if (newCount >= 3) {
-      setEasterEggToast('ကိုယ်လည်း တစ်ခွန်း ကို အရမ်းချစ်တယ် 🥹❤️');
+      setEasterEggToast(`ကိုယ်လည်း ${her(1)} ကို အရမ်းချစ်တယ် 🥹❤️`);
       setHeartTapCount(0);
     }
   };
@@ -78,7 +78,7 @@ export default function App() {
         <FloatingCursor />
 
         {/* Floating Audio Player */}
-        <AudioPlayerWidget autoPlayTriggered={autoPlayMusic} />
+        <AudioPlayerWidget />
 
         {/* Easter Egg Toast Notification */}
         <EasterEggToast
@@ -129,7 +129,6 @@ export default function App() {
               >
                 <Page1Intro
                   onNext={handleNextStep}
-                  onTriggerAudio={() => setAutoPlayMusic(true)}
                 />
               </motion.div>
             )}
@@ -144,7 +143,6 @@ export default function App() {
               >
                 <Page2Envelope
                   onNext={handleNextStep}
-                  onTriggerAudio={() => setAutoPlayMusic(true)}
                 />
               </motion.div>
             )}
@@ -214,7 +212,6 @@ export default function App() {
               >
                 <Page7LoveLetter
                   onNext={handleNextStep}
-                  onTriggerAudio={() => setAutoPlayMusic(true)}
                 />
               </motion.div>
             )}

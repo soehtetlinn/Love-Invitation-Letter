@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { DateSelection, RomanticLocation } from '../../types';
 import { ROMANTIC_LOCATIONS } from '../../data/locations';
+import { her } from '../../data/partner';
 import { Calendar as CalendarIcon, Clock, MapPin, Star, ExternalLink, Check, Sparkles, Filter, ChevronRight } from 'lucide-react';
 
 interface Page4Props {
@@ -50,10 +51,10 @@ export const Page4DatePlanner: React.FC<Page4Props> = ({ selection, onChangeSele
       <div className="text-center mb-8">
         <span className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-white/20 backdrop-blur-xl text-white text-xs font-semibold border border-white/30 shadow-sm mb-3">
           <Sparkles className="w-3.5 h-3.5 text-amber-200" />
-          တစ်ခွန်း ရဲ့ စိတ်ကြိုက် Date အစီအစဉ် 💖
+          {her(0)} ရဲ့ စိတ်ကြိုက် Date အစီအစဉ် 💖
         </span>
         <h2 className="text-2xl sm:text-4xl font-extrabold text-white font-myanmar leading-tight drop-shadow-sm">
-          ဒီနေ့ရဲ့ Date ကို တစ်ခွန်း ရွေးပေးနော် ❤️
+          ဒီနေ့ရဲ့ Date ကို {her(1)} ရွေးပေးနော် ❤️
         </h2>
         <p className="text-xs sm:text-sm text-white/80 mt-2 font-myanmar">
           ရက်စွဲ၊ အချိန်နဲ့ သွားချင်တဲ့ နေရာလေးကို စိတ်ကြိုက် ရွေးချယ်ပေးပါ...

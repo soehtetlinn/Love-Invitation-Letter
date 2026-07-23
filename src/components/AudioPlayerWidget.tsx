@@ -1,30 +1,31 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Volume2, VolumeX, Play, Pause, Sparkles } from 'lucide-react';
 
-interface AudioPlayerProps {
-  autoPlayTriggered: boolean;
-}
-
 const DEFAULT_TRACK = {
   title: 'စိန်ပန်းပြာ',
   artist: 'အောင်မြင့်မြတ် & မေဆွိ',
   url: '/sein-pan-pya.mp3',
 };
 
-export const AudioPlayerWidget: React.FC<AudioPlayerProps> = ({ autoPlayTriggered }) => {
+export const AudioPlayerWidget: React.FC = () => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
   const [volume, setVolume] = useState(0.5);
   const [isExpanded, setIsExpanded] = useState(false);
 
   const audioRef = useRef<HTMLAudioElement | null>(null);
-  const hasAutoPlayedRef = useRef(false);
+  const volumeRef = useRef(volume);
+  const isMutedRef = useRef(isMuted);
+  const userPausedRef = useRef(false);
+
+  volumeRef.current = volume;
+  isMutedRef.current = isMuted;
 
   useEffect(() => {
     const audio = new Audio(DEFAULT_TRACK.url);
     audio.loop = true;
-    audio.volume = volume;
     audio.preload = 'auto';
+    audio.volume = isMutedRef.current ? 0 : volumeRef.current;
     audioRef.current = audio;
 
     const handlePlay = () => setIsPlaying(true);
@@ -35,7 +36,40 @@ export const AudioPlayerWidget: React.FC<AudioPlayerProps> = ({ autoPlayTriggere
     audio.addEventListener('pause', handlePause);
     audio.addEventListener('ended', handleEnded);
 
+    const tryPlay = async () => {
+      if (userPausedRef.current || !audioRef.current) return;
+      try {
+        await audioRef.current.play();
+        setIsPlaying(true);
+        return true;
+      } catch {
+        setIsPlaying(false);
+        return false;
+      }
+    };
+
+    // Start as soon as the site loads
+    void tryPlay();
+
+    // If the browser blocks autoplay, start on the first tap/click/key
+    const unlockOnGesture = () => {
+      void tryPlay().then((started) => {
+        if (started) {
+          window.removeEventListener('pointerdown', unlockOnGesture);
+          window.removeEventListener('keydown', unlockOnGesture);
+          window.removeEventListener('touchstart', unlockOnGesture);
+        }
+      });
+    };
+
+    window.addEventListener('pointerdown', unlockOnGesture);
+    window.addEventListener('keydown', unlockOnGesture);
+    window.addEventListener('touchstart', unlockOnGesture);
+
     return () => {
+      window.removeEventListener('pointerdown', unlockOnGesture);
+      window.removeEventListener('keydown', unlockOnGesture);
+      window.removeEventListener('touchstart', unlockOnGesture);
       audio.removeEventListener('play', handlePlay);
       audio.removeEventListener('pause', handlePause);
       audio.removeEventListener('ended', handleEnded);
@@ -54,11 +88,11 @@ export const AudioPlayerWidget: React.FC<AudioPlayerProps> = ({ autoPlayTriggere
   const startPlayback = async () => {
     const audio = audioRef.current;
     if (!audio) return;
+    userPausedRef.current = false;
     try {
       await audio.play();
       setIsPlaying(true);
     } catch {
-      // Autoplay may be blocked until a user gesture
       setIsPlaying(false);
     }
   };
@@ -66,6 +100,7 @@ export const AudioPlayerWidget: React.FC<AudioPlayerProps> = ({ autoPlayTriggere
   const stopPlayback = () => {
     const audio = audioRef.current;
     if (!audio) return;
+    userPausedRef.current = true;
     audio.pause();
     setIsPlaying(false);
   };
@@ -77,13 +112,6 @@ export const AudioPlayerWidget: React.FC<AudioPlayerProps> = ({ autoPlayTriggere
       void startPlayback();
     }
   };
-
-  useEffect(() => {
-    if (autoPlayTriggered && !hasAutoPlayedRef.current) {
-      hasAutoPlayedRef.current = true;
-      void startPlayback();
-    }
-  }, [autoPlayTriggered]);
 
   return (
     <div className="fixed bottom-4 left-4 sm:left-8 z-40 transition-all duration-300">

@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'motion/react';
 import { Sparkles, Heart, ArrowRight } from 'lucide-react';
+import { her, herSoft } from '../../data/partner';
 
 interface Page1Props {
   onNext: () => void;
-  onTriggerAudio: () => void;
 }
 
-export const Page1Intro: React.FC<Page1Props> = ({ onNext, onTriggerAudio }) => {
+export const Page1Intro: React.FC<Page1Props> = ({ onNext }) => {
   const [showSubText, setShowSubText] = useState(false);
   const [showButton, setShowButton] = useState(false);
 
@@ -27,7 +27,6 @@ export const Page1Intro: React.FC<Page1Props> = ({ onNext, onTriggerAudio }) => 
   }, []);
 
   const handleStart = () => {
-    onTriggerAudio();
     onNext();
   };
 
@@ -58,7 +57,7 @@ export const Page1Intro: React.FC<Page1Props> = ({ onNext, onTriggerAudio }) => 
           transition={{ duration: 0.8, delay: 0.4 }}
           className="text-3xl sm:text-5xl font-extrabold text-white mb-4 tracking-wide leading-relaxed font-myanmar drop-shadow-sm"
         >
-          တစ်ခွန်းလေးရေ...
+          {herSoft(0)}ရေ...
         </motion.h1>
 
         {/* Secondary Subtitle */}
@@ -69,7 +68,7 @@ export const Page1Intro: React.FC<Page1Props> = ({ onNext, onTriggerAudio }) => 
             transition={{ duration: 0.8 }}
             className="text-base sm:text-xl text-white/90 font-medium max-w-md mx-auto leading-relaxed mb-8 px-2 font-myanmar"
           >
-            ကိုယ့်မှာ တစ်ခွန်း အတွက် အထူးလက်ဆောင်တစ်ခု ရှိတယ်... ✨
+            ကိုယ့်မှာ {her(1)} အတွက် အထူးလက်ဆောင်တစ်ခု ရှိတယ်... ✨
           </motion.p>
         )}
 

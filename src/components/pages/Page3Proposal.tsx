@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import confetti from 'canvas-confetti';
 import { Heart, Sparkles, PartyPopper, CheckCircle } from 'lucide-react';
+import { her } from '../../data/partner';
 
 interface Page3Props {
   onNext: () => void;
@@ -100,11 +101,11 @@ export const Page3Proposal: React.FC<Page3Props> = ({ onNext, onTriggerToast }) 
             </div>
 
             <h1 className="text-white text-2xl sm:text-4xl font-bold leading-tight mb-4 drop-shadow-sm font-myanmar">
-              တစ်ခွန်း နဲ့ Date Night <br className="hidden sm:inline" />သွားပေးမလား? 🥺❤️
+              {her(1)} နဲ့ Date Night <br className="hidden sm:inline" />သွားပေးမလား? 🥺❤️
             </h1>
 
             <p className="text-white/80 text-sm sm:text-lg mb-8 px-2 leading-relaxed font-myanmar">
-              တစ်ခွန်း မရှိရင် ကိုယ့်ရဲ့ကမ္ဘာကြီးက ပျင်းစရာကြီးနော်... <br />
+              {her(0)} မရှိရင် ကိုယ့်ရဲ့ကမ္ဘာကြီးက ပျင်းစရာကြီးနော်... <br />
               အဲ့တော့ ကိုယ်နဲ့အတူတူ ပျော်စရာတွေ ဖန်တီးရအောင် ❤️
             </p>
 
@@ -173,7 +174,7 @@ export const Page3Proposal: React.FC<Page3Props> = ({ onNext, onTriggerToast }) 
             </h2>
 
             <p className="text-base text-white/90 font-myanmar mb-8 leading-relaxed">
-              တစ်ခွန်း နဲ့ သွားရမယ့် Date Night လေးအတွက် အစီအစဉ်ဆွဲဖို့ အသင့်ဖြစ်ပါပြီ! 🌹
+              {her(1)} နဲ့ သွားရမယ့် Date Night လေးအတွက် အစီအစဉ်ဆွဲဖို့ အသင့်ဖြစ်ပါပြီ! 🌹
             </p>
 
             <motion.button

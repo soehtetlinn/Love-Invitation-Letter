@@ -1,34 +1,33 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Mail, Heart, Sparkles, Feather, ArrowRight, Check } from 'lucide-react';
+import { her } from '../../data/partner';
 
 interface Page7Props {
   onNext: () => void;
-  onTriggerAudio: () => void;
 }
 
-const FULL_LOVE_LETTER_MM = `ချစ်ရပါသော တစ်ခွန်း သို့... ❤️
+const FULL_LOVE_LETTER_MM = `ချစ်ရပါသော ${her(0)} သို့... ❤️
 
-ဒီစာလေးကို ဖတ်နေတဲ့ အချိန်မှာ တစ်ခွန်း ရဲ့ မျက်နှာလေးမှာ အပြုံးလေးတွေ ဝေဆာနေလိမ့်မယ်လို့ ကိုယ် ယုံကြည်ပါတယ်။
+ဒီစာလေးကို ဖတ်နေတဲ့ အချိန်မှာ ${her(1)} ရဲ့ မျက်နှာလေးမှာ အပြုံးလေးတွေ ဝေဆာနေလိမ့်မယ်လို့ ကိုယ် ယုံကြည်ပါတယ်။
 
-တစ်ခွန်း နဲ့ စတင်ဆုံတွေ့ခဲ့ရတဲ့ နေ့ရက်ကလေးကစလို့ ကိုယ့်ရဲ့ ဘဝတစ်ခုလုံးဟာ ပိုမို အဓိပ္ပာယ်ရှိပြီး ပျော်စရာတွေနဲ့ ပြည့်နှက်သွားခဲ့ရတာပါ။ တစ်ခွန်း ရဲ့ အပြုံး၊ တစ်ခွန်း ရဲ့ ရယ်သံနဲ့ မင်းရဲ့ ဂရုစိုက်မှုလေးတွေဟာ ကိုယ့်အတွက်တော့ ကမ္ဘာပေါ်မှာ အလှဆုံး လက်ဆောင်ပါပဲ။
+${her(0)} နဲ့ စတင်ဆုံတွေ့ခဲ့ရတဲ့ နေ့ရက်ကလေးကစလို့ ကိုယ့်ရဲ့ ဘဝတစ်ခုလုံးဟာ ပိုမို အဓိပ္ပာယ်ရှိပြီး ပျော်စရာတွေနဲ့ ပြည့်နှက်သွားခဲ့ရတာပါ။ ${her(1)} ရဲ့ အပြုံး၊ ${her(0)} ရဲ့ ရယ်သံနဲ့ မင်းရဲ့ ဂရုစိုက်မှုလေးတွေဟာ ကိုယ့်အတွက်တော့ ကမ္ဘာပေါ်မှာ အလှဆုံး လက်ဆောင်ပါပဲ။
 
-တစ်ခါတစ်လေ ကိုယ် ပင်ပန်းနွမ်းနယ်နေချိန်တွေမှာ တစ်ခွန်း ရဲ့ "ဂရုစိုက်နော်" ဆိုတဲ့ စကားတစ်ခွန်းတည်းနဲ့တင် ကိုယ့် စိတ်ထဲမှာ နွေးထွေးသွားရပါတယ်။ မင်းနဲ့အတူ ရှိနေရတဲ့ စက္ကန့်တိုင်းကို ကိုယ် အရမ်း မြတ်နိုးရပါတယ်။
+တစ်ခါတစ်လေ ကိုယ် ပင်ပန်းနွမ်းနယ်နေချိန်တွေမှာ ${her(1)} ရဲ့ "ဂရုစိုက်နော်" ဆိုတဲ့ စကားတစ်ခွန်းတည်းနဲ့တင် ကိုယ့် စိတ်ထဲမှာ နွေးထွေးသွားရပါတယ်။ မင်းနဲ့အတူ ရှိနေရတဲ့ စက္ကန့်တိုင်းကို ကိုယ် အရမ်း မြတ်နိုးရပါတယ်။
 
-ရှေ့ဆက်လျှောက်လှမ်းရမယ့် နေ့ရက်တိုင်းမှာလည်း တစ်ခွန်း ရဲ့ လက်ကလေးကို တင်းတင်းဆုပ်ကိုင်ထားရင်း၊ တစ်ခွန်း ကို ပိုမို ပျော်ရွှင်အောင် ထာဝရ ချစ်ပေးသွားပါမယ်လို့ ကိုယ် ကတိပေးပါတယ်။
+ရှေ့ဆက်လျှောက်လှမ်းရမယ့် နေ့ရက်တိုင်းမှာလည်း ${her(0)} ရဲ့ လက်ကလေးကို တင်းတင်းဆုပ်ကိုင်ထားရင်း၊ ${her(1)} ကို ပိုမို ပျော်ရွှင်အောင် ထာဝရ ချစ်ပေးသွားပါမယ်လို့ ကိုယ် ကတိပေးပါတယ်။
 
 တို့နှစ်ယောက်ရဲ့ ဒီနေ့ Date Night လေးဟာလည်း အမြဲတမ်း အမှတ်တရ ဖြစ်ကျန်ရစ်မယ့် သိပ်လှတဲ့ ညလေးတစ်ည ဖြစ်ပါစေနော်... ❤️
 
-တစ်ခွန်း ကို သိပ်ချစ်သော...
+${her(0)} ကို သိပ်ချစ်သော...
 ကိုယ် ❤️`;
 
-export const Page7LoveLetter: React.FC<Page7Props> = ({ onNext, onTriggerAudio }) => {
+export const Page7LoveLetter: React.FC<Page7Props> = ({ onNext }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [typedText, setTypedText] = useState('');
   const [isTypingDone, setIsTypingDone] = useState(false);
 
   const handleOpenLetter = () => {
-    onTriggerAudio();
     setIsOpen(true);
   };
 
@@ -55,7 +54,7 @@ export const Page7LoveLetter: React.FC<Page7Props> = ({ onNext, onTriggerAudio }
       <div className="text-center mb-8">
         <span className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-white/20 backdrop-blur-xl text-white text-xs font-semibold border border-white/30 shadow-sm mb-3">
           <Feather className="w-3.5 h-3.5 text-amber-200" />
-          တစ်ခွန်း အတွက် သီးသန့် ချစ်စာလွှာ 📜
+          {her(1)} အတွက် သီးသန့် ချစ်စာလွှာ 📜
         </span>
         <h2 className="text-2xl sm:text-4xl font-extrabold text-white font-myanmar leading-tight drop-shadow-sm">
           စာအိတ်ကလေးကို နှိပ်ပြီး ဖတ်ကြည့်ပါ ✉️❤️
@@ -83,7 +82,7 @@ export const Page7LoveLetter: React.FC<Page7Props> = ({ onNext, onTriggerAudio }
               </div>
               <span className="text-lg font-extrabold font-myanmar text-[#3d2314] dark:text-amber-200">စာအိတ်ဖွင့်ရန် နှိပ်ပါ ✉️</span>
               <span className="text-xs text-[#5c3821] dark:text-amber-100/80 mt-1 font-myanmar">
-                (တစ်ခွန်း အတွက် သီးသန့် ရေးသားထားသော စာ)
+                ({her(0)} အတွက် သီးသန့် ရေးသားထားသော စာ)
               </span>
             </motion.div>
           </motion.div>

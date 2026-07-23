@@ -5,6 +5,7 @@ import { toPng } from 'html-to-image';
 import QRCode from 'qrcode';
 import { DateSelection } from '../../types';
 import { ROMANTIC_LOCATIONS } from '../../data/locations';
+import { DEFAULT_PARTNER_NAME, PARTNER_NAME_HINT, her } from '../../data/partner';
 import { Heart, Sparkles, Calendar, Clock, MapPin, Download, CheckCircle2, Ticket, QrCode as QrIcon, User } from 'lucide-react';
 
 interface Page8Props {
@@ -19,7 +20,7 @@ export const Page8Confirmation: React.FC<Page8Props> = ({ selection, onChangeSel
   const ticketRef = useRef<HTMLDivElement | null>(null);
 
   const selectedLoc = ROMANTIC_LOCATIONS.find((l) => l.id === selection.locationId) || ROMANTIC_LOCATIONS[0];
-  const partnerName = selection.partnerName || 'တစ်ခွန်း ❤️';
+  const partnerName = selection.partnerName || DEFAULT_PARTNER_NAME;
 
   useEffect(() => {
     // Generate QR code pointing back to current URL
@@ -84,10 +85,10 @@ export const Page8Confirmation: React.FC<Page8Props> = ({ selection, onChangeSel
           အတည်ပြုခြင်းနှင့် လက်မှတ် ✨
         </span>
         <h2 className="text-2xl sm:text-4xl font-extrabold text-white font-myanmar leading-tight drop-shadow-sm">
-          တစ်ခွန်း နဲ့ Date Night အတည်ပြုချက် 💖
+          {her(0)} နဲ့ Date Night အတည်ပြုချက် 💖
         </h2>
         <p className="text-xs sm:text-sm text-white/80 mt-2 font-myanmar">
-          တစ်ခွန်း ရွေးချယ်ထားသော အစီအစဉ်များ အဆင်သင့်ဖြစ်ပါပြီ...
+          {her(1)} ရွေးချယ်ထားသော အစီအစဉ်များ အဆင်သင့်ဖြစ်ပါပြီ...
         </p>
       </div>
 
@@ -102,13 +103,13 @@ export const Page8Confirmation: React.FC<Page8Props> = ({ selection, onChangeSel
           <div className="bg-white/20 backdrop-blur-xl p-4 rounded-2xl border border-white/30">
             <label className="block text-xs font-bold text-white mb-1.5 font-myanmar flex items-center gap-1.5">
               <User className="w-4 h-4 text-white" />
-              အချစ်ဆုံး တစ်ခွန်း ရဲ့ နာမည်/ခေါ်စနိုး နာမည်လေး ထည့်ပါ:
+              အချစ်ဆုံး {her(1)} ရဲ့ နာမည်/ခေါ်စနိုး နာမည်လေး ထည့်ပါ:
             </label>
             <input
               type="text"
               value={selection.partnerName || ''}
               onChange={(e) => onChangeSelection({ partnerName: e.target.value })}
-              placeholder="ဥပမာ - တစ်ခွန်း / အချစ် / Darling"
+              placeholder={`ဥပမာ - ${PARTNER_NAME_HINT} / အချစ် / Darling`}
               className="w-full px-4 py-2.5 rounded-xl border border-amber-200 bg-[#faedcd] text-[#3d2314] font-bold font-myanmar focus:outline-none focus:ring-2 focus:ring-amber-300 text-sm shadow-inner"
             />
           </div>
@@ -177,7 +178,7 @@ export const Page8Confirmation: React.FC<Page8Props> = ({ selection, onChangeSel
           {/* Emotional Message */}
           <div className="text-center py-2">
             <p className="text-base sm:text-lg font-bold text-white font-myanmar drop-shadow-sm">
-              "ကိုယ် တစ်ခွန်း နဲ့ ဒီနေ့လေးကို အရမ်းစောင့်မျှော်နေပါတယ် ❤️"
+              "ကိုယ် {her(0)} နဲ့ ဒီနေ့လေးကို အရမ်းစောင့်မျှော်နေပါတယ် ❤️"
             </p>
           </div>
 
@@ -203,7 +204,7 @@ export const Page8Confirmation: React.FC<Page8Props> = ({ selection, onChangeSel
           {/* Confirmed Celebration Header */}
           <div className="text-center bg-white/25 backdrop-blur-3xl text-white p-6 rounded-[32px] border border-white/40 shadow-xl font-myanmar">
             <h3 className="text-3xl font-black mb-2 animate-bounce drop-shadow-sm">
-              တစ်ခွန်း ကို အရမ်းချစ်တယ် ❤️
+              {her(1)} ကို အရမ်းချစ်တယ် ❤️
             </h3>
             <p className="text-sm text-white/90">
               တို့နှစ်ယောက်ရဲ့ Date Night လက်မှတ်လေး ထွက်ရှိလာပါပြီ!
